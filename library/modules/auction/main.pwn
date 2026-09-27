@@ -85,7 +85,7 @@ new runningAuctionsCount = 0, unactiveCars = 0;
 new bureauSfEnterPick, bureauExitPick; //bureauLsEnterPick, bureauLvEnterPick;
 new selectedCar[MAX_PLAYERS] = {-1, ...};
 
-#include "C:\Users\grish\OneDrive\Desktop\gamemodes\gamemodes\modules\auction\load_modules.hxx"
+#include "C:/Users/grish/OneDrive/Desktop/gamemodes/gamemodes/modules/auction/load_modules.hxx"
 
 public OnGameModeInit()
 {
