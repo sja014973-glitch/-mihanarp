@@ -8,18 +8,20 @@ on:
 jobs:
   compile:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Compile Pawn
+      - name: Compile MihanRP
         id: compiler
         uses: knryuu/pawn-compiler-action@v1
         with:
-          input: new.pwn
+          input: gamemodes/new.pwn
+          includes: pawno/include
 
       - name: Upload AMX
         uses: actions/upload-artifact@v4
         with:
-          name: new-amx
+          name: mihanrp-amx
           path: ${{ steps.compiler.outputs.compiled_file }}
