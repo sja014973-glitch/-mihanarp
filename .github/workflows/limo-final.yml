@@ -1,0 +1,49 @@
+name: Build MihanRP LimoHost
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Compile MihanRP
+        uses: knryuu/pawn-compiler-action@v1
+        with:
+          input: gamemodes/new.pwn
+          includes: pawno/include
+
+      - name: Prepare package
+        run: |
+          set -e
+          rm -rf MihanRP_Limo_Final
+          mkdir -p MihanRP_Limo_Final/gamemodes
+          mkdir -p MihanRP_Limo_Final/plugins
+
+          cp gamemodes/new.amx MihanRP_Limo_Final/gamemodes/new.amx
+          cp mihanrp.sql MihanRP_Limo_Final/mihanrp.sql
+
+          for plugin in crashdetect mysql sscanf streamer; do
+            if [ -f "plugins/${plugin}.so" ]; then
+              cp "plugins/${plugin}.so" MihanRP_Limo_Final/plugins/
+            fi
+          done
+
+      - name: Create ZIP
+        run: zip -r MihanRP_Limo_Final.zip MihanRP_Limo_Final
+
+      - name: Upload final package
+        uses: actions/upload-artifact@v4
+        with:
+          name: MihanRP_Limo_Final
+          path: MihanRP_Limo_Final.zip
+          retention-days: 14
