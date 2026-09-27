@@ -5,6 +5,9 @@ on:
     branches: [ main, master ]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   compile:
     runs-on: ubuntu-latest
@@ -20,8 +23,29 @@ jobs:
           input: gamemodes/new.pwn
           includes: pawno/include
 
+      - name: Normalize AMX filename
+        run: |
+          if [ -f 'gamemodes/new\.amx' ]; then
+            cp 'gamemodes/new\.amx' gamemodes/new.amx
+          elif [ -f 'gamemodes/new.amx' ]; then
+            echo "new.amx already exists"
+          else
+            echo "AMX output not found"
+            find gamemodes -maxdepth 1 -type f -print
+            exit 1
+          fi
+
       - name: Upload AMX
         uses: actions/upload-artifact@v4
         with:
           name: mihanrp-amx
-          path: ${{ steps.compiler.outputs.compiled_file }}
+          path: gamemodes/new.amx
+
+      - name: Save compiled AMX to repository
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add gamemodes/new.amx
+          git diff --cached --quiet && exit 0
+          git commit -m "Add compiled MihanRP AMX"
+          git push
