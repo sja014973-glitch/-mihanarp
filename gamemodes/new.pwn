@@ -7080,7 +7080,7 @@ stock SetNextBusCP(playerid,pos)
 	return 1;
 }
 
-stock show_dialog(playerid, dialogid, style, caption[], const info[], const button1[], const button2[])
+stock show_dialog(playerid, dialogid, style, caption[], info[], button1[], button2[])
 {
 	p_t_info[playerid][p_dialog] = dialogid;
 	return ShowPlayerDialog(playerid, dialogid, style, caption, info, button1, button2);
