@@ -1,4 +1,4 @@
-name: Build MihanRP LimoHost
+name: Build MihanRP LimoHost Full
 
 on:
   workflow_dispatch:
@@ -22,28 +22,114 @@ jobs:
           input: gamemodes/new.pwn
           includes: pawno/include
 
+      - name: Download Linux plugins
+        run: |
+          set -e
+          mkdir -p /tmp/deps
+
+          curl -L --fail -o /tmp/pawncmd.tar.gz \
+            https://github.com/katursis/Pawn.CMD/releases/download/3.2.0/pawncmd-3.2.0-linux.tar.gz
+          tar -xzf /tmp/pawncmd.tar.gz -C /tmp/deps
+
+          curl -L --fail -o /tmp/pawnraknet.tar.gz \
+            https://github.com/katursis/Pawn.RakNet/releases/download/1.4.1/pawnraknet-1.4.1-linux.tar.gz
+          tar -xzf /tmp/pawnraknet.tar.gz -C /tmp/deps
+
+          curl -L --fail -o /tmp/sv.zip \
+            https://github.com/CyberMor/sampvoice/releases/download/v3.1/sv_server_037.zip
+          unzip -q /tmp/sv.zip -d /tmp/deps/sv
+
+          curl -L --fail -o /tmp/fcnpc.zip \
+            https://github.com/ziggi/FCNPC/releases/download/v2.0.11/FCNPC-2.0.11.zip
+          unzip -q /tmp/fcnpc.zip -d /tmp/deps/fcnpc
+
       - name: Prepare package
         run: |
           set -e
+
           rm -rf MihanRP_Limo_Final
           mkdir -p MihanRP_Limo_Final/gamemodes
           mkdir -p MihanRP_Limo_Final/plugins
+          mkdir -p MihanRP_Limo_Final/scriptfiles
 
           cp gamemodes/new.amx MihanRP_Limo_Final/gamemodes/new.amx
           cp mihanrp.sql MihanRP_Limo_Final/mihanrp.sql
 
-          for plugin in crashdetect mysql sscanf streamer; do
-            if [ -f "plugins/${plugin}.so" ]; then
-              cp "plugins/${plugin}.so" MihanRP_Limo_Final/plugins/
-            fi
+          for p in crashdetect mysql sscanf streamer; do
+            cp "plugins/${p}.so" MihanRP_Limo_Final/plugins/
+          done
+
+          find /tmp/deps -type f \( \
+            -name 'pawncmd.so' -o \
+            -name 'pawnraknet.so' -o \
+            -name 'sampvoice.so' -o \
+            -name 'FCNPC.so' \
+          \) -exec cp {} MihanRP_Limo_Final/plugins/ \;
+
+          git clone --depth 1 --branch master \
+            https://github.com/inject3r/mihanrp.git /tmp/mihanrp
+
+          if [ -d /tmp/mihanrp/scriptfiles ]; then
+            cp -r /tmp/mihanrp/scriptfiles/. MihanRP_Limo_Final/scriptfiles/
+          fi
+
+          cat > MihanRP_Limo_Final/server.cfg <<'CFG'
+lanmode 0
+rcon_password CHANGE_THIS_PASSWORD
+hostname MihanRP
+gamemode0 new 1
+filterscripts
+announce 0
+query 1
+weburl mihanrp.ir
+onfoot_rate 40
+incar_rate 40
+weapon_rate 40
+chatlogging 0
+stream_distance 150.0
+stream_rate 1000
+language FA/EN
+plugins crashdetect.so mysql.so pawncmd.so pawnraknet.so sscanf.so streamer.so sampvoice.so FCNPC.so
+port 10564
+maxplayers 1000
+maxnpc 2
+CFG
+
+          cat > MihanRP_Limo_Final/README_LIMO.txt <<'TXT'
+MihanRP LimoHost package.
+
+Upload the contents to the SA-MP server root.
+
+Keep the existing LimoHost samp03svr binary.
+
+Use server.cfg from this package.
+
+Import mihanrp.sql into the MihanRP database.
+
+Important:
+The public MihanRP source references the TOTP plugin, but the public repository
+only provides TOTP.dll for Windows. A matching Linux TOTP.so was not found,
+so it is NOT being falsely included in this package.
+TXT
+
+      - name: Verify
+        run: |
+          set -e
+
+          test -s MihanRP_Limo_Final/gamemodes/new.amx
+          test -s MihanRP_Limo_Final/server.cfg
+
+          for p in crashdetect mysql sscanf streamer pawncmd pawnraknet sampvoice FCNPC; do
+            test -s "MihanRP_Limo_Final/plugins/${p}.so"
           done
 
       - name: Create ZIP
-        run: zip -r MihanRP_Limo_Final.zip MihanRP_Limo_Final
+        run: |
+          zip -r -9 MihanRP_Limo_Final_Full.zip MihanRP_Limo_Final
 
       - name: Upload final package
         uses: actions/upload-artifact@v4
         with:
-          name: MihanRP_Limo_Final
-          path: MihanRP_Limo_Final.zip
+          name: MihanRP_Limo_Final_Full
+          path: MihanRP_Limo_Final_Full.zip
           retention-days: 14
