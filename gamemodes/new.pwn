@@ -7336,7 +7336,7 @@ callback: toggle_controlable(playerid, bool:toggle)
 }
 callback: clear_anim(playerid) return ApplyAnimation(playerid, "CARRY", "crry_prtial", 4.0,0,0,0,0,0,1);
 
-#include "..\library\static\init.inc"
+#include "../library/static/init.inc"
 
 callback:player_timer(playerid)
 {
@@ -9850,20 +9850,20 @@ stock SetPlayerSkinEx(playerid, skinid)
 
 // ---------------
 
-#include "..\library\modules\auction\design\maps.pwn"
-#include "..\library\modules\auction\design\biznes_centre.pwn"
-#include "..\library\modules\auction\design\textdraws.pwn"
-#include "..\library\modules\auction\functions\auction_menu_managment.pwn"
-#include "..\library\modules\auction\functions\GetPlayerID.pwn"
-#include "..\library\modules\auction\functions\strfmt.pwn"
-#include "..\library\modules\auction\functions\TimeConverter.pwn"
+#include "../library/modules/auction/design/maps.pwn"
+#include "../library/modules/auction/design/biznes_centre.pwn"
+#include "../library/modules/auction/design/textdraws.pwn"
+#include "../library/modules/auction/functions/auction_menu_managment.pwn"
+#include "../library/modules/auction/functions/GetPlayerID.pwn"
+#include "../library/modules/auction/functions/strfmt.pwn"
+#include "../library/modules/auction/functions/TimeConverter.pwn"
 
 // ---------------
 
-#include "..\library\modules\system\player_pacifist.inc"
-#include "..\library\modules\system\antidmzone.inc"
-#include "..\library\modules\system\hookah.inc"
-#include "..\library\modules\system\speedometer.inc"
+#include "../library/modules/system/player_pacifist.inc"
+#include "../library/modules/system/antidmzone.inc"
+#include "../library/modules/system/hookah.inc"
+#include "../library/modules/system/speedometer.inc"
 
 // ---------------
 
@@ -21102,14 +21102,14 @@ public OnGameModeInit()
     LimitPlayerMarkerRadius(100.0);
 
 	//==============================================================================
-	#include "..\library\modules/textdraws/m_td.pwn"
+	#include "../library/modules/textdraws/m_td.pwn"
 	LoadGlobalFlinSpeedometerTD();
 	LoadVoteTextdraws();
 	LoadInventoryTextDraw();
 	CreateDateServer();
 	//==============================================================================
-	#include "..\library\modules/objects/m_objects.pwn"
-	#include "..\library\modules/map/main.pwn"
+	#include "../library/modules/objects/m_objects.pwn"
+	#include "../library/modules/map/main.pwn"
 	//==============================================================================
 	#if defined _metro_stop_included
 		ms_OnGameModeInit();
@@ -43543,7 +43543,7 @@ public OnPlayerConnect(playerid)
 		TextDrawShowForPlayer(playerid, td_logo[j]);
 	}
 
-	#include "..\library\modules/objects/m_rem_objects.pwn"
+	#include "../library/modules/objects/m_rem_objects.pwn"
 
 
 	//==============================================================================
