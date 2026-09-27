@@ -1,0 +1,25 @@
+name: Build MihanRP
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Compile Pawn
+        id: compiler
+        uses: knryuu/pawn-compiler-action@v1
+        with:
+          input: new.pwn
+
+      - name: Upload AMX
+        uses: actions/upload-artifact@v4
+        with:
+          name: new-amx
+          path: ${{ steps.compiler.outputs.compiled_file }}
