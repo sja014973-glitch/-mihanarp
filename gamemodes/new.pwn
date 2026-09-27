@@ -2147,7 +2147,7 @@ new const photographer_job_info[MAX_PHOTOGRAPHER_JOB_QUEST][e_photographer_job_i
 	{2005.3545,  1537.2700, 14.6149, 1996.5729,  1550.0276,  20.6621,  1999.2576,1544.6112,  10.3265, "Assignment from the wife"},
 	{-1985.3851, 1132.8583, 53.2471, -2036.8679, 1102.1115,  89.3367, -2010.2142,1117.7034,  62.7589, "A task from the priest"}
 };
-new const photographer_msg_quest[7][] =
+new photographer_msg_quest[7][] =
 {
 	{""c_white"\t\t\t\tHello "c_server"%s"c_white"\n\
 	  Our city hall needs a photo report featuring "c_server"\"%s\""c_white".\n\
