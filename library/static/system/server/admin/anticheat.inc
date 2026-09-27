@@ -256,7 +256,7 @@ public OnCheatDetected(playerid, const ip_address[], type, code)
     return 1;
 }
 
-stock CheatDetectedKick(playerid, cheat_code, cheat_name[], nex_ac)
+stock CheatDetectedKick(playerid, cheat_code, const cheat_name[], nex_ac)
 {
 	AdminMes(""c_server"* A.INFO:"c_grey" %s[%d] tavasot anticheat kick shod (%s [code: %03d]).", PlayerInfo[playerid][name], playerid, cheat_name, cheat_code);
 

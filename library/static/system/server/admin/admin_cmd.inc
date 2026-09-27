@@ -1194,7 +1194,7 @@ cmd:ban(playerid, params[])
     if (PlayerInfo[params[0]][admin] >= 5)
         return SendError(playerid, "You can't give him a punishment.");
 
-    new timestamp_x = timestamp_x + (params[1] * 86400);
+    new timestamp_x = timestamp + (params[1] * 86400);
     new year, month, day, hour, minute, second;
     TimestampToDate(timestamp_x, year, month, day, hour, minute, second, 3, 30);
 
@@ -1309,7 +1309,7 @@ cmd:sban(playerid, params[])
 
     RunQuery("UPDATE `users_admins` SET `u_a_bans`=`u_a_bans`+1 WHERE `u_a_name`='%s' LIMIT 1", PlayerInfo[playerid][name]);
 
-    new timestamp_x = timestamp_x + (params[1] * 86400);
+    new timestamp_x = timestamp + (params[1] * 86400);
     new year, month, day, hour, minute, second;
     TimestampToDate(timestamp_x, year, month, day, hour, minute, second, 3, 30);
 

@@ -7080,7 +7080,7 @@ stock SetNextBusCP(playerid,pos)
 	return 1;
 }
 
-stock show_dialog(playerid, dialogid, style, caption[], info[], button1[], button2[])
+stock show_dialog(playerid, dialogid, style, const caption[], const info[], const button1[], const button2[])
 {
 	p_t_info[playerid][p_dialog] = dialogid;
 	return ShowPlayerDialog(playerid, dialogid, style, caption, info, button1, button2);
@@ -59897,7 +59897,7 @@ stock AddConnect(playerid, type)
     for(new idx; idx < PANEL_LINE; idx++) TextDrawSetString(connectDraw[idx], connectText[idx]);
 }
 
-stock AddWarning(playerid, reason[], type = 0)
+stock AddWarning(playerid, const reason[], type = 0)
 {
 	new AStringF[200];
 
